@@ -1,0 +1,71 @@
+---
+title: "Nutritional Facts For Most Common Foods"
+output: html_document
+---
+
+
+```{r include=FALSE}
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+library(rio)
+library(DT)
+
+
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+
+
+Everybody nowadays is mindful of what they eat.counting calories and reducing fat intake is the number one advice given by all dieticians and nutritionists. Therefore, we need to know what foods are rich in what nutrients, __Don't we?__
+
+
+The table contains more than 300 foods each with the amount of Calories, Fats, Proteins, Saturated Fats, Carbohydrates, Fibers labeled for each food. Also, the foods are also categorized into various groups:
+
+
+* Dairy products
+* Fats, Oils, Shortenings
+* Meat, Poultry
+* Fish, Seafood
+* Breads,cereals,fastfood,grains
+* Desserts
+* Vegetables
+* Fruits 
+
+## Table of Nutritional Facts
+
+
+
+
+```{r include=FALSE}
+nf <- read.csv("nutrients_csvfile.csv" , header = TRUE)
+dim(nf)
+```
+
+```{r}
+nf %>%
+  group_by(Category) %>%
+  filter(Measure=="1 cup") %>%
+  datatable(extensions = 'Buttons',
+            options = list(dom = 'Blfrtip',
+                           lengthMenu = list(c(10,25,50,-1),
+                                             c(10,25,50,"All")))
+            )
+```
+
+
+## Table of Nutritional Facts (1)
+```{r}
+nf %>%
+  group_by(Category) %>%
+  filter(Measure=="1 cup")
+
+```
+
+
