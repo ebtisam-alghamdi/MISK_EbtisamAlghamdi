@@ -60,7 +60,7 @@ nf %>%
 ```
 
 
-## Table of Nutritional Facts (1)
+## Table of Nutritional Facts for ( 1 cup)
 ```{r}
 nf %>%
   group_by(Category) %>%
