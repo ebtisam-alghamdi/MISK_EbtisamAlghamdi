@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = FALSE)
 Everybody nowadays is mindful of what they eat.counting calories and reducing fat intake is the number one advice given by all dieticians and nutritionists. Therefore, we need to know what foods are rich in what nutrients, __Don't we?__
 
 
-The table contains more than 300 foods each with the amount of Calories, Fats, Proteins, Saturated Fats, Carbohydrates, Fibers labeled for each food. Also, the foods are also categorized into various groups:
+The table contains more than _300_ foods each with the amount of Calories, Fats, Proteins, Saturated Fats, Carbohydrates, Fibers labeled for each food. Also, the foods are also categorized into various groups:
 
 
 * Dairy products
@@ -39,16 +39,25 @@ The table contains more than 300 foods each with the amount of Calories, Fats, P
 * Vegetables
 * Fruits 
 
-## Table of Nutritional Facts
 
 
+#reading data
 
 ```{r}
 Nfacts <- read.csv("Nfacts.csv", header = TRUE, sep = ",")
 dim(Nfacts)
 ```
 
+#explor my dataset
+```{r}
+names(Nfacts)
 
+str(Nfacts)
+
+summary(Nfacts)
+```
+
+#Table Of Nutrition Facts Classified by -Category- :
 
 ```{r}
 Nfacts %>%
@@ -68,5 +77,6 @@ Nfacts %>%
   filter(Measure=="1 cup")
 
 ```
+
 
 
