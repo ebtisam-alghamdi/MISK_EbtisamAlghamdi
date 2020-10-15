@@ -10,9 +10,10 @@ library(kableExtra)
 library(tidyverse)
 library(rio)
 library(DT)
-
+library(datasets)
 
 ```
+
 
 
 ```{r setup, include=FALSE}
@@ -42,16 +43,15 @@ The table contains more than 300 foods each with the amount of Calories, Fats, P
 
 
 
-
-```{r include=FALSE}
-nf <- read.csv("nutrients_csvfile.csv" , header = TRUE)
-dim(nf)
+```{r}
+Nfacts <- read.csv("Nfacts.csv", header = TRUE, sep = ",")
+dim(Nfacts)
 ```
 
+
+
 ```{r}
-nf %>%
-  group_by(Category) %>%
-  filter(Measure=="1 cup") %>%
+Nfacts %>%
   datatable(extensions = 'Buttons',
             options = list(dom = 'Blfrtip',
                            lengthMenu = list(c(10,25,50,-1),
@@ -60,9 +60,10 @@ nf %>%
 ```
 
 
-## Table of Nutritional Facts for ( 1 cup)
+## Table of Nutritional Facts for ( 1 cup) for each category :
+
 ```{r}
-nf %>%
+Nfacts %>%
   group_by(Category) %>%
   filter(Measure=="1 cup")
 
