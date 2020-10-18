@@ -4,21 +4,26 @@ output: html_document
 ---
 
 
-```{r include=FALSE}
+```{r, setup , include=FALSE}
 library(knitr)
 library(kableExtra)
 library(tidyverse)
 library(rio)
 library(DT)
 library(datasets)
+library(dplyr)
 
 ```
 
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+```{r setup, include=FALSE }
+knitr::opts_chunk$set(echo = TRUE, character(length = 2))
 
+```
+
+```{r include=FALSE}
+View("Nfacts.csv")
 ```
 
 
@@ -44,25 +49,24 @@ The table contains more than _300_ foods each with the amount of Calories, Fats,
 #reading data
 
 ```{r}
-Nfacts <- read.csv("Nfacts.csv", header = TRUE, sep = ",")
+nfc <- read.csv("Nfacts.csv", header = TRUE, sep = ",")
 dim(Nfacts)
 ```
 
 #explor my dataset
 ```{r}
-names(Nfacts)
+names(nfc)
 
-str(Nfacts)
+str(nfc)
 
-summary(Nfacts)
+summary(nfc)
 ```
 
 #Table Of Nutrition Facts Classified by -Category- :
 
 ```{r}
-Nfacts %>%
-  datatable(extensions = 'Buttons',
-            options = list(dom = 'Blfrtip',
+nfc %>%
+  datatable(options = list(dom = 'Blfrtip',
                            lengthMenu = list(c(10,25,50,-1),
                                              c(10,25,50,"All")))
             )
@@ -72,11 +76,12 @@ Nfacts %>%
 ## Table of Nutritional Facts for ( 1 cup) for each category :
 
 ```{r}
-Nfacts %>%
+nfc %>%
   group_by(Category) %>%
   filter(Measure=="1 cup")
 
 ```
 
-
-
+```{r echo=FALSE}
+plot (nfc$Calories , nfc$Grams)
+```
