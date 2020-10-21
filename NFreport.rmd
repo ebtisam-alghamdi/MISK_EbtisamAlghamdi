@@ -8,10 +8,8 @@ knitr::opts_chunk$set(echo = FALSE, character(length = 2),
                       message = FALSE, warning = FALSE)
 
 library(tidyverse)
-
 library(knitr)
 library(DT)
-
 library(munsell)
 library(RColorBrewer)
 library(Hmisc)
@@ -55,7 +53,19 @@ nfc <- nfc %>%
          Calories = str_replace(Calories, "-", ""),
          Calories = as.numeric(Calories))
 
+nfc <- nfc %>% 
+     mutate(Fat= str_replace(Fat, "t","0"),
+            Fat= as.numeric(Fat))
 
+
+nfc <- nfc %>% 
+  mutate(Protein= str_replace(Protein, "t", "0"),
+         Protein= as.numeric(Protein))
+
+
+nfc <- nfc %>% 
+  mutate(Sat.Fat= str_replace(Sat.Fat, "t", "0"),
+         Sat.Fat= as.numeric(Sat.Fat))
 
 ```
 
