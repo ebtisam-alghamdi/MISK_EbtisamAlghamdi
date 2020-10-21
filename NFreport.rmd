@@ -4,29 +4,24 @@ output: html_document
 ---
 
 
-```{r, setup , include=FALSE}
+```{r}
+library(readr)
 library(knitr)
-library(kableExtra)
 library(tidyverse)
-library(rio)
 library(DT)
-library(datasets)
 library(dplyr)
-
+library(ggplot2)
+library(munsell)
+library(RColorBrewer)
+library(Hmisc)
+library(gapminder)
 ```
 
 
 
 ```{r setup, include=FALSE }
 knitr::opts_chunk$set(echo = TRUE, character(length = 2))
-
 ```
-
-```{r include=FALSE}
-View("Nfacts.csv")
-```
-
-
 
 
 Everybody nowadays is mindful of what they eat.counting calories and reducing fat intake is the number one advice given by all dieticians and nutritionists. Therefore, we need to know what foods are rich in what nutrients, __Don't we?__
@@ -45,12 +40,11 @@ The table contains more than _300_ foods each with the amount of Calories, Fats,
 * Fruits 
 
 
-
 #reading data
 
 ```{r}
-nfc <- read.csv("Nfacts.csv", header = TRUE, sep = ",")
-dim(Nfacts)
+Nfacts <- read_csv("Nfacts.csv")
+View(Nfacts)
 ```
 
 #explor my dataset
@@ -65,11 +59,17 @@ summary(nfc)
 #Table Of Nutrition Facts Classified by -Category- :
 
 ```{r}
-nfc %>%
+nfc %>% 
   datatable(options = list(dom = 'Blfrtip',
                            lengthMenu = list(c(10,25,50,-1),
                                              c(10,25,50,"All")))
-            )
+  )
+```
+
+#the mean for calories for each catgory 
+```{r}
+
+cal_mean = aggregate(nfc[,4], by=list(convert (num(nfc$Calories)), FUN=mean)
 ```
 
 
@@ -79,7 +79,6 @@ nfc %>%
 nfc %>%
   group_by(Category) %>%
   filter(Measure=="1 cup")
-
 ```
 
 ```{r echo=FALSE}
