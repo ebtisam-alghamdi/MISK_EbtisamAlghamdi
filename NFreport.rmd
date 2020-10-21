@@ -3,58 +3,62 @@ title: "Nutritional Facts For Most Common Foods"
 output: html_document
 ---
 
+```{r setup, include=FALSE }
+knitr::opts_chunk$set(echo = FALSE, character(length = 2),
+                      message = FALSE, warning = FALSE)
 
-```{r}
-library(readr)
-library(knitr)
 library(tidyverse)
+
+library(knitr)
 library(DT)
-library(dplyr)
-library(ggplot2)
+
 library(munsell)
 library(RColorBrewer)
 library(Hmisc)
 library(gapminder)
 ```
 
+Nowadays, everybody is mindful of what they eat. Counting calories and reducing fat intake is the number one advice given by all dietitians and nutritionists. Therefore, we need to know which foods are rich in which nutrients, __Don't we?__
 
+__What are the research question that you are trying to answer with this data set?__
 
-```{r setup, include=FALSE }
-knitr::opts_chunk$set(echo = TRUE, character(length = 2))
-```
-
-
-Everybody nowadays is mindful of what they eat.counting calories and reducing fat intake is the number one advice given by all dieticians and nutritionists. Therefore, we need to know what foods are rich in what nutrients, __Don't we?__
-
-
-The table contains more than _300_ foods each with the amount of Calories, Fats, Proteins, Saturated Fats, Carbohydrates, Fibers labeled for each food. Also, the foods are also categorized into various groups:
-
+The [dataset](https://www.kaggle.com/niharika41298/nutrition-details-for-most-common-foods) contains more than _300_ foods each with the amount of Calories, Fats, Proteins, Saturated Fats, Carbohydrates, Fibers labeled for each food. Also, the foods are categorized into various groups:
 
 * Dairy products
 * Fats, Oils, Shortenings
 * Meat, Poultry
 * Fish, Seafood
-* Breads,cereals,fastfood,grains
+* Breads,cereals,fast food,grains
 * Desserts
 * Vegetables
 * Fruits 
 
-
-#reading data
+# Reading data
 
 ```{r}
-Nfacts <- read_csv("Nfacts.csv")
-View(Nfacts)
+nfc <- read_csv("Nfacts.csv")
+
+
+# Clean up the data
+
+# Remonve , in numbers
+# str_replace(nfc$Calories, ",", "XYZ")
+
+# remove - in numbers
+# str_replace(nfc$Calories, "-", "XYZ")
+
+# convert to numeric
+# as.numeric(nfc$Calories)
+
+nfc <- nfc %>% 
+  mutate(Calories = str_replace(Calories, ",", ""),
+         Calories = str_replace(Calories, "-", ""),
+         Calories = as.numeric(Calories))
+
+
+
 ```
 
-#explor my dataset
-```{r}
-names(nfc)
-
-str(nfc)
-
-summary(nfc)
-```
 
 #Table Of Nutrition Facts Classified by -Category- :
 
@@ -66,21 +70,24 @@ nfc %>%
   )
 ```
 
-#the mean for calories for each catgory 
+#the mean for calories for each catgory of 
+
 ```{r}
-
-cal_mean = aggregate(nfc[,4], by=list(convert (num(nfc$Calories)), FUN=mean)
+nfc %>% 
+  group_by(Category) %>% 
+  summarise(n = n(),
+            avg_cal = mean(Calories, na.rm = TRUE))
 ```
-
 
 ## Table of Nutritional Facts for ( 1 cup) for each category :
 
 ```{r}
 nfc %>%
-  group_by(Category) %>%
-  filter(Measure=="1 cup")
+  filter(Measure == "1 cup")
 ```
 
 ```{r echo=FALSE}
-plot (nfc$Calories , nfc$Grams)
+ggplot(nfc, aes(Calories, Grams)) +
+  geom_point(shape = 16, alpha = 0.4) +
+  theme_classic()
 ```
