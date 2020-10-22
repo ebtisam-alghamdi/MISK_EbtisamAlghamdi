@@ -105,16 +105,15 @@ nfc %>%
 
 ```
 
+
 ```{r echo=FALSE}
+
+# Show the Calories in each Category 
+
 ggplot(nfc, aes( Calories,Category ,color= Category)) +
-  geom_point(fill="#FFFFFF")+
-theme_classic()
+  geom_point( Shape= 16, alpha=0.4)+
+  theme_classic()
 
  
 ```
 
-```{r echo=FALSE}
-ggplot(nfc, aes(Calories, Grams)) +
-  geom_point(shape = 16, alpha = 0.4) +
-  theme_classic()
-```
