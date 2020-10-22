@@ -12,8 +12,7 @@ library(knitr)
 library(DT)
 library(munsell)
 library(RColorBrewer)
-library(Hmisc)
-library(gapminder)
+library(ggplot2)
 ```
 
 Nowadays, everybody is mindful of what they eat. Counting calories and reducing fat intake is the number one advice given by all dietitians and nutritionists. Therefore, we need to know which foods are rich in which nutrients, __Don't we?__
@@ -31,7 +30,6 @@ The [dataset](https://www.kaggle.com/niharika41298/nutrition-details-for-most-co
 * Vegetables
 * Fruits 
 
-# Reading data
 
 ```{r}
 nfc <- read_csv("Nfacts.csv")
@@ -39,19 +37,23 @@ nfc <- read_csv("Nfacts.csv")
 
 # Clean up the data
 
-# Remonve , in numbers
-# str_replace(nfc$Calories, ",", "XYZ")
+# Remove , in numbers
+# str_replace(nfc$Calories, ",", "")
 
 # remove - in numbers
-# str_replace(nfc$Calories, "-", "XYZ")
+# str_replace(nfc$Calories, "-", "")
 
 # convert to numeric
 # as.numeric(nfc$Calories)
+
 
 nfc <- nfc %>% 
   mutate(Calories = str_replace(Calories, ",", ""),
          Calories = str_replace(Calories, "-", ""),
          Calories = as.numeric(Calories))
+
+# Remove t in (fat, portin and sat.fat) replace it with "0"
+# convert (fat,portin and sat.fat) to numeric 
 
 nfc <- nfc %>% 
      mutate(Fat= str_replace(Fat, "t","0"),
@@ -66,6 +68,19 @@ nfc <- nfc %>%
 nfc <- nfc %>% 
   mutate(Sat.Fat= str_replace(Sat.Fat, "t", "0"),
          Sat.Fat= as.numeric(Sat.Fat))
+
+# Remove "A-E , F-P , R-Z" form Vegetables an Fruits Catogery names 
+
+nfc <- nfc %>% 
+  
+  mutate(Category= str_replace(Category, "Vegetables A-E", "Vegetables"),
+         Category= str_replace(Category, "Vegetables F-P", "Vegetables"),
+         Category= str_replace(Category, "Vegetables R-Z", "Vegetables"),
+         Category= str_replace(Category, "Fruits A-F", "Fruits"),
+         Category= str_replace(Category, "Fruits G-P", "Fruits"),
+         Category= str_replace(Category, "Fruits R-Z", "Fruits"))
+       
+
 
 ```
 
@@ -86,14 +101,16 @@ nfc %>%
 nfc %>% 
   group_by(Category) %>% 
   summarise(n = n(),
-            avg_cal = mean(Calories, na.rm = TRUE))
+            max_cal = max(Calories, na.rm = TRUE))
+
 ```
 
-## Table of Nutritional Facts for ( 1 cup) for each category :
+```{r echo=FALSE}
+ggplot(nfc, aes( Calories,Category ,color= Category)) +
+  geom_point(fill="#FFFFFF")+
+theme_classic()
 
-```{r}
-nfc %>%
-  filter(Measure == "1 cup")
+ 
 ```
 
 ```{r echo=FALSE}
