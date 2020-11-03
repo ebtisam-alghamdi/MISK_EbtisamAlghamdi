@@ -1,0 +1,71 @@
+---
+title: "Diamon Dataset ِAnalysis"
+author: "Ebtisam alghamdi"
+output: html_document
+---
+
+```{r setup, include=FALSE }
+knitr::opts_chunk$set(echo = FALSE, character(length = 2),
+                      message = FALSE, warning = FALSE)
+```
+
+
+```{r}
+#Importing Packages That We Need 
+library(tidyverse)
+library(knitr)
+library(ggplot2)
+library(RColorBrewer)
+library(DT)
+```
+
+
+```{r}
+
+#Reading The Diamonds Dataset 
+diamonds <- read.csv("diamonds.csv")
+```
+
+
+In this report i will do some analysis on __"Diamonds"__ dataset.The [dataset](https://www.kaggle.com/shivam2503/diamonds) contain diamonds attributes like _carat,cut,color,clarity,depth and price_.
+
+This report will answer many quastions like :
+
+* what is the range of the diamonds price?
+* which attribute will effect the diamond price ?
+* What is highest diamond price and its attributes?
+* what is the diamonds colors and which has the highest value and price ?
+* What is the different names of the diamonds clarity?
+* what is the attributes for each diamonds cut?
+
+
+```{r}
+#What is the range of the diamonds prices?
+
+datatable(diamonds %>% 
+  filter(price == range(diamonds$price)))
+
+```
+
+```{r}
+#Re
+#which attribute will effect the diamond price ?
+ggplot(diamonds,aes(x=color,y=price,color=color))+
+       geom_point( Shape= 10, alpha=0.8)+
+  geom_jitter()+
+  theme_classic()
+```
+
+```{r}
+#Re
+ggplot(diamonds, aes(x = carat, y = price,color=cut)) +
+  geom_point(Shape= 16, alpha=0.4)+
+  theme_classic()
+```
+
+
+
+
+```{r}
+```
+

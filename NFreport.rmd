@@ -52,11 +52,11 @@ nfc <- nfc %>%
          Calories = str_replace(Calories, "-", ""),
          Calories = as.numeric(Calories))
 
-# Remove t in (fat, portin and sat.fat) replace it with "0"
+# Remove t in (fat, portin, sat.fat and fiber) replace it with "0"
 # convert (fat,portin and sat.fat) to numeric 
 
 nfc <- nfc %>% 
-     mutate(Fat= str_replace(Fat, "t","0"),
+     mutate(Fat= str_replace(Fat,"t","0"),
             Fat= as.numeric(Fat))
 
 
@@ -68,6 +68,10 @@ nfc <- nfc %>%
 nfc <- nfc %>% 
   mutate(Sat.Fat= str_replace(Sat.Fat, "t", "0"),
          Sat.Fat= as.numeric(Sat.Fat))
+
+nfc <- nfc %>% 
+  mutate(Fiber= str_replace(Fiber, "t", "0"),
+         Fiber= as.numeric(Fiber))
 
 # Remove "A-E , F-P , R-Z" form Vegetables an Fruits Catogery names 
 
@@ -95,13 +99,20 @@ nfc %>%
   )
 ```
 
+
+```{r}
+ nfc.new <-
+nfc %>% 
+  mutate(highprotan=max(Protein, na.rm = TRUE))
+```
+
 #the mean for calories for each catgory of 
 
 ```{r}
 nfc %>% 
-  group_by(Category) %>% 
-  summarise(n = n(),
-            max_cal = max(Calories, na.rm = TRUE))
+group_by(Category) %>%
+summarise(n = n(),max_cal = max(Fiber, na.rm = TRUE))
+
 
 ```
 
@@ -112,8 +123,8 @@ nfc %>%
 
 ggplot(nfc, aes( Calories,Category ,color= Category)) +
   geom_point( Shape= 16, alpha=0.4)+
-  theme_classic()
-
+  theme_classic()+
+theme(legend.position = c(2, 3))
  
 ```
 
