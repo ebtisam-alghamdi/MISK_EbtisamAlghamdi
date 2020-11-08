@@ -16,7 +16,7 @@ library(tidyverse)
 library(knitr)
 library(ggplot2)
 library(RColorBrewer)
-library(DT)
+library(kableExtra)
 ```
 
 
@@ -31,33 +31,26 @@ In this report i will do some analysis on __"Diamonds"__ dataset.The [dataset](h
 
 This report will answer many quastions like :
 
-* what is the range of the diamonds price?
+* what is the range of the diamonds price?o
 * which attribute will effect the diamond price ?
-* What is highest diamond price and its attributes?
+* What is highest diamond price and its attributes?o
 * what is the diamonds colors and which has the highest value and price ?
 * What is the different names of the diamonds clarity?
 * what is the attributes for each diamonds cut?
+
+This Dataset contain 53940 different Diamonds type with price range :
 
 
 ```{r}
 #What is the range of the diamonds prices?
 
-datatable(diamonds %>% 
-  filter(price == range(diamonds$price)))
+kbl(diamonds %>%
+  summarise(The_Range=range(diamonds$price)))
 
 ```
 
 ```{r}
-#Re
-#which attribute will effect the diamond price ?
-ggplot(diamonds,aes(x=color,y=price,color=color))+
-       geom_point( Shape= 10, alpha=0.8)+
-  geom_jitter()+
-  theme_classic()
-```
-
-```{r}
-#Re
+#Show the diamonds prices in relation with the carat 
 ggplot(diamonds, aes(x = carat, y = price,color=cut)) +
   geom_point(Shape= 16, alpha=0.4)+
   theme_classic()
@@ -65,7 +58,15 @@ ggplot(diamonds, aes(x = carat, y = price,color=cut)) +
 
 
 
+__Diamonds Prices With Relation with Carat__
+
+#What is highest diamond price and its attributes?
 
 ```{r}
+
+#The Highest Diamond Price 
+diamonds %>% 
+  filter(price== max(price))
+
 ```
 
