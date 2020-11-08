@@ -17,6 +17,7 @@ library(knitr)
 library(ggplot2)
 library(RColorBrewer)
 library(kableExtra)
+library(formattable)
 ```
 
 
@@ -52,7 +53,7 @@ kbl(diamonds %>%
 ```{r}
 #Show the diamonds prices in relation with the carat 
 ggplot(diamonds, aes(x = carat, y = price,color=cut)) +
-  geom_point(Shape= 16, alpha=0.4)+
+  geom_point(Shape= 18, alpha=0.3)+
   theme_classic()
 ```
 
@@ -64,9 +65,19 @@ __Diamonds Prices With Relation with Carat__
 
 ```{r}
 
+customGreen0 = "#DeF7E9"
+
+customGreen = "#71CA97"
+
+customRed = "#ff7f7f"
 #The Highest Diamond Price 
-diamonds %>% 
+hidiamnod <-diamonds %>% 
   filter(price== max(price))
 
+formattable(hidiamnod, prstyle=formatter("span",
+  'price'=color_tile(customGreen)))
+
 ```
+
+
 
