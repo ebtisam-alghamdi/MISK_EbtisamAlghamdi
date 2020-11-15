@@ -19,8 +19,12 @@ Nowadays, everybody is mindful of what they eat. Counting calories and reducing 
 
 __What are the research question that you are trying to answer with this data set?__
 
-*The highest food category with portin?
-*
+*The Calories Range for each Food Cateogry?o
+*The highest food with Portein?o
+*The highest food with Fat?
+*Which vegetable contain high Faber?  
+
+
 
 The [dataset](https://www.kaggle.com/niharika41298/nutrition-details-for-most-common-foods) contains more than _300_ foods each with the amount of Calories, Fats, Proteins, Saturated Fats, Carbohydrates, Fibers labeled for each food. Also, the foods are categorized into various groups:
 
@@ -33,9 +37,20 @@ The [dataset](https://www.kaggle.com/niharika41298/nutrition-details-for-most-co
 * Vegetables
 * Fruits 
 
+```{r}
+
+#Reading our Dataset:
+
+nfc <- read_csv("Nfacts.csv")
+```
 
 ```{r}
-nfc <- read_csv("Nfacts.csv")
+#Supset from dataset 
+
+nfcs<-nfc[,c("Calories","Fat","Carbs")]
+```
+
+```{r}
 
 
 # Clean up the data
@@ -55,7 +70,7 @@ nfc <- nfc %>%
          Calories = str_replace(Calories, "-", ""),
          Calories = as.numeric(Calories))
 
-# Remove t in (fat, portin, sat.fat and fiber) replace it with "0"
+# Remove t in (fat, portin, sat.fat,fiber,carbs) replace it with "0"
 # convert (fat,portin and sat.fat) to numeric 
 
 nfc <- nfc %>% 
@@ -75,6 +90,10 @@ nfc <- nfc %>%
 nfc <- nfc %>% 
   mutate(Fiber= str_replace(Fiber, "t", "0"),
          Fiber= as.numeric(Fiber))
+
+nfc <- nfc %>% 
+  mutate(Crabs= str_replace(Carbs, "t", "0"),
+         Carbs= as.numeric(Carbs))
 
 # Remove "A-E , F-P , R-Z" form Vegetables an Fruits Catogery names 
 
@@ -103,31 +122,23 @@ nfc %>%
 ```
 
 
-```{r}
- nfc.new <-
-nfc %>% 
-  mutate(highprotan=max(Protein, na.rm = TRUE))
-```
-
-#the mean for calories for each catgory of 
-
-```{r}
-nfc %>% 
-group_by(Category) %>%
-summarise(n = n(),max_cal = max(Fiber, na.rm = TRUE))
-
-
-```
-
 
 ```{r echo=FALSE}
 
-# Show the Calories in each Category 
+#The Calories Range for each Cateogry?
 
-ggplot(nfc, aes( Calories,Category ,color= Category)) +
-  geom_point( Shape= 16, alpha=0.4)+
-  theme_classic()+
-theme(legend.position = c(2, 3))
- 
+ ggplot(nfc,aes(x=Calories,y=Category,color=Category))+
+geom_point(shape=16,alpha=0.4)+
+ scale_y_continuous(limits=c(0,335))+
+  theme_classic()
 ```
 
+```{r}
+#The Highest Food With Protein 
+nfc[which(nfc$Protein==max(nfc$Protein)),c("Food","Category","Protein")]
+
+
+
+```
+
+```
